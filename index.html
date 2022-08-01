@@ -30,14 +30,14 @@
 
     <div class="wrapper">
 
-        <div class="haader">
-            <div class="haader__container container">
-                <div class="haader__logo">
+        <div class="header">
+            <div class="header__container container">
+                <a class="header__logo" href="#">
                     <img src="./img/Logo.png" alt="логотип">
-                </div>
-                <div class="haader__menu menu-haader">
-                    <div data-da=".menu-haader__body,767.98,last" class="menu-haader__top top-menu-haader">
-                        <div data-spollers class="top-menu-haader__language language">
+                </a>
+                <div class="header__menu menu-header">
+                    <div data-da=".menu-header__body,767.98,last" class="menu-header__top top-menu-header">
+                        <div data-spollers class="top-menu-header__language language">
                             <button tabindex="-1" type="button" data-spoller class="language__ru">  
                                 <img src="./img/language.png" alt="ru">
                                 <p>Русский</p>
@@ -50,18 +50,18 @@
                                 <p>Ukrainian</p>
                             </div>
                         </div>
-                        <div class="top-menu-haader__call">
-                            <a class="top-menu-haader__contact" href="tel:7380578551254">
-                                <svg class="top-menu-haader__icon-phone icon-phone">
+                        <div class="top-menu-header__call">
+                            <a class="top-menu-header__contact" href="tel:7380578551254">
+                                <svg class="top-menu-header__icon-phone icon-phone">
                                     <use xlink: href="sprite.svg#phone"></use>
                                 </svg>
                                 <span>+38 057 855 12 54</span>
                             </a>
-                            <button type="button" class="top-menu-haader__btn btn" id="CallBack">Заказать
+                            <button type="button" class="top-menu-header__btn btn" id="CallBack">Заказать
                                 звонок</button>
                         </div>   
                     </div>
-                    <nav class="menu-haader__body menu">
+                    <nav class="menu-header__body menu">
                         <ul data-spollers  data-one-spoller class="menu__list">
                             <li class="menu__item">
                                 <button tabindex="-1" type="button" data-spoller data-goto="" class="menu__link" href="#">О компании
@@ -131,14 +131,14 @@
                         </ul>
                     </nav>
                 </div>
-                <div class="top-menu-haader__burger-icon">
+                <div class="top-menu-header__burger-icon">
                     <span></span>
                 </div> 
             </div>
         </div>
         <div class="main">
 
-            <section class="main-slider">
+            <section id="главный-слайдер" class="main-slider">
                 <svg class="main-slider__icon-line icon-line">
                     <use xlink: href="sprite.svg#line"></use>
                 </svg>
@@ -183,20 +183,20 @@
                 </div>
                 <div data-da=".main-slider,1450,last" class="main-slider__swiper-pagination swiper-pagination"></div>
             </section>
-            <section>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Alias, porro accusamus id aut ex repudiandae aspernatur expedita possimus architecto odit! Iusto neque suscipit hic saepe delectus! Quae minima distinctio dolorum.
-            </section>
+            
         </div>
 <div class="footer">
     <div class="footer__top top-footer">
         <div class="container">
             <div class="top-footer__collumns">
                 <div class="top-footer__collumn top-footer__collumn_one">
-                    <img class="top-footer__logo" src="./img/Logo.png" alt="логотип">
+                    <a href="#главный-слайдер">
+                        <img class="top-footer__logo" src="./img/Logo.png" alt="логотип">
+                    </a>
                     <div class="top-footer__visitors visitors">
                         <h4 class="visitors__title">Нас уже посетили</h4>
                         <div id="counter" class="visitors__amount">
-                            <div data-count="365928"class="visitors__number">0</div>
+                            <div data-digits-counter class="visitors__number">365928</div>
                             <div class="visitors__text">человек</div>
                         </div>
                     </div> 
@@ -321,7 +321,7 @@
 </div>        
     </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
     <script src="js/swiper-bundle.min.js"></script>
     <script src="js/main.js"></script>
 

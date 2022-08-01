@@ -1,16 +1,137 @@
 
 
-/* бургер-меню */
-const iconMenu = document.querySelector('.top-menu-haader__burger-icon');
-const headerMenu = document.querySelector('.menu-haader');
-if (iconMenu) {
-  iconMenu.addEventListener("click", function (e) {
-    document.body.classList.toggle('_lock');
-    iconMenu.classList.toggle('_active-burger-menu');
-    headerMenu.classList.toggle('_active-burger-menu');
+/* Исчезновение шапки при скролле */
+let lastScroll = 0;
+const defaultOffset = 100;//через сколько px при прокрутке вниз исчезает блок
+const header = document.querySelector('.header');
+
+const scrollPosition = () => window.pageYOffset || document.documentElement.scrollTop;
+const containHide = () => header.classList.contains('hide');
+window.addEventListener('scroll', () => {
+  if(scrollPosition() > lastScroll && !containHide() &&scrollPosition() > defaultOffset) {
+    header.classList.add('hide');
+  }
+  else if(scrollPosition() < lastScroll && containHide()){
+    header.classList.remove('hide');
+  }
+  lastScroll = scrollPosition();
+})
+
+/* Счетчик посещения сайта в footer */
+window.addEventListener("load", windowLoad);
+
+function windowLoad() {
+  //функция инициализации
+  function digitsCountersInit(digitsCountersItems) {
+    let digitsCounters = digitsCountersItems ? digitsCountersItems : document.querySelectorAll("[data-digits-counter]");
+    if (digitsCounters) {
+      digitsCounters.forEach(digitsCounter => {
+        digitsCountersAnimate(digitsCounter);
+      }); 
+    }
+  }
+  //функция анимации
+  function digitsCountersAnimate(digitsCounter) {
+    let startTimestamp = null;
+    const duration = parseInt(digitsCounter.dataset.digitsCounter) ? parseInt(digitsCounter.dataset.digitsCounter) : 3000;// время анимации
+    const startValue = parseInt(digitsCounter.innerHTML);
+    const startPosition = 0;
+    const step = (timestamp) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      digitsCounter.innerHTML = Math.floor(progress * (startPosition + startValue));
+      if (progress < 1) {
+        window.requestAnimationFrame(step);
+      }
+    };
+    window.requestAnimationFrame(step);
+  }
+  //Пуск анимации сразу при загрузки страницы
+  // digitsCountersInit();
+
+  //Пуск анимации при скролле страницы до секции
+  let options = {
+    threshold: 0.3//анимация сработает когда нужная секция отпуститься на 30% вниз
+  }
+  let observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const targetElement = entry.target;
+        const digitsCountersItems = targetElement.querySelectorAll("[data-digits-counter]");
+        if (digitsCountersItems.length) {
+          digitsCountersInit(digitsCountersItems);
+        }
+        // если надо чтобы онимация сработала только один раз при загрузке страницы, то включаем:
+        // observer.unobserve(targetElement);
+      }
+    });
+  }, options);
+
+  let sections = document.querySelectorAll('.footer');//родитель где находиться счетчик
+  if (sections.length) {
+    sections.forEach(section => {
+      observer.observe(section);
+    });
+  } 
+}
+
+
+/* плавное перемещение по документу при клике по ссылке */
+const anchors = document.querySelectorAll('a[href*="#"]')
+
+for (let anchor of anchors) {
+  anchor.addEventListener("click", function(e) {
+    e.preventDefault();
+    const blockID = anchor.getAttribute('href')
+    document.querySelector('' + blockID).scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    })
   })
 }
 
+
+/* слайдер на главной странице */
+
+if (document.querySelector('.main-slider')) {
+    const swiper = new Swiper('.main-slider__swiper', {
+        // бесконечная прокрутка
+        loop: true,
+        //автоматическая прокрутка при загрузке страници
+          autoplay:{ 
+              delay: 2500,
+              stopOnLastSlider: true, 
+              disableOninteraction: false
+          },
+        // Скорость прокрутки  
+        speed: 1000,  
+        // базавая пагинация
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+        // Количество слайдев для показа
+        slidesPerView: 1,
+         // Стартовый слайд
+         initialSlide: 0,
+          // Паралакс
+         parallax: true,
+         // Упарвление клавиатурой
+         keyboard: {
+           enabled: true,
+           onlyInViewport: true,
+           pageUpDown: true,
+         },
+        // Отключение функционала, если слайдов меньше чем нужно
+        watchOverflow: true,
+        // Обновить свайпер при изменении элементов свайпера
+        observer: true,
+        // Обновить свайпер при изменении дочерних элементов свайпера
+        observeSlideChildren: true,
+        // Обновить свайпер при изменении родительских элементов свайпера
+        observeParents: true,
+    });
+}
 
 /* спойлеры */
 /* 
@@ -205,6 +326,18 @@ let _slideToggle = (target, duration = 500) => {
         return _slideUp(target, duration);
     }
 }
+/* бургер-меню */
+const iconMenu = document.querySelector('.top-menu-haader__burger-icon');
+const headerMenu = document.querySelector('.menu-haader');
+if (iconMenu) {
+  iconMenu.addEventListener("click", function (e) {
+    document.body.classList.toggle('_lock');
+    iconMenu.classList.toggle('_active-burger-menu');
+    headerMenu.classList.toggle('_active-burger-menu');
+  })
+}
+
+
 function DynamicAdapt(type) {
 	this.type = type;
 }
@@ -358,75 +491,3 @@ DynamicAdapt.prototype.arraySort = function (arr) {
 
 const da = new DynamicAdapt("max");
 da.init();
-/* слайдер на главной странице */
-
-if (document.querySelector('.main-slider')) {
-    const swiper = new Swiper('.main-slider__swiper', {
-        // бесконечная прокрутка
-        loop: true,
-        //автоматическая прокрутка при загрузке страници
-          autoplay:{ 
-              delay: 2500,
-              stopOnLastSlider: true, 
-              disableOninteraction: false
-          },
-        // Скорость прокрутки  
-        speed: 1000,  
-        // базавая пагинация
-        pagination: {
-          el: '.swiper-pagination',
-          clickable: true,
-        },
-        // Количество слайдев для показа
-        slidesPerView: 1,
-         // Стартовый слайд
-         initialSlide: 0,
-          // Паралакс
-         parallax: true,
-         // Упарвление клавиатурой
-         keyboard: {
-           enabled: true,
-           onlyInViewport: true,
-           pageUpDown: true,
-         },
-        // Отключение функционала, если слайдов меньше чем нужно
-        watchOverflow: true,
-        // Обновить свайпер при изменении элементов свайпера
-        observer: true,
-        // Обновить свайпер при изменении дочерних элементов свайпера
-        observeSlideChildren: true,
-        // Обновить свайпер при изменении родительских элементов свайпера
-        observeParents: true,
-    });
-}
-
-var counted = 0;
-$(window).scroll(function() {
-
-  var oTop = $('#counter').offset().top - window.innerHeight;
-  if (counted == 0 && $(window).scrollTop() > oTop) {
-    $('.visitors__number').each(function() {
-      var $this = $(this),
-        countTo = $this.attr('data-count');
-      $({
-        countNum: $this.text()
-      }).animate({
-          countNum: countTo
-        },
-        {
-          duration: 4000,
-          easing: 'swing',
-          step: function() {
-            $this.text(Math.floor(this.countNum));
-          },
-          complete: function() {
-            $this.text(this.countNum); 
-          }
-        });
-    });
-    counted = 1;
-  }
-
-});
-
- 

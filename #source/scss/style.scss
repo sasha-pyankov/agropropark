@@ -124,6 +124,7 @@ body{
 	font-weight: 700;
 	font-size: 23px;
 	line-height: 26 / 23 * 100%;
+	text-transform: uppercase;
 	color: $green;
 	padding: 21px 24px;
 	transition: 0.4s ease-out;
@@ -230,14 +231,17 @@ body{
 }
 
 /* шапка =======================================================================================================================*/
-.haader {
+.header {
 	min-height: 125px;
 	background-color: $bg;
 	padding-top: 32px;
 	position: fixed;
+	left: 0;
+	top: 0;
 	width: 100%;
 	z-index: 5;
-	@media (max-width: 767.98px) {
+	transition: 0.3s ease-out;
+	@media (max-width: 991.98px) {
 		padding-top: 16px;
 	}
 
@@ -267,7 +271,7 @@ body{
 	}
 }
 
-.menu-haader {
+.menu-header {
 	position: relative;
 	z-index: 10;
 	display: flex;
@@ -305,6 +309,12 @@ body{
 		align-items: center;
 		padding-top: 10px;
 		margin-bottom: 25px;
+		@media (max-width:1219px) {
+			margin-bottom: 12px;
+		}
+		@media (max-width:991.98px) {
+			margin-bottom: 12px;
+		}
 		@media (max-width: 767.98px) {
 			flex-direction: column-reverse;
 			align-items: flex-start;
@@ -321,7 +331,7 @@ body{
 	}
 }
 
-.top-menu-haader {
+.top-menu-header {
 
 	&__language {
 	}
@@ -470,6 +480,7 @@ body{
 		font-size: 23px;
 		line-height: 26 / 23 * 100%;
 		color: $black-text;	
+		text-transform: uppercase;
 		background-color: $bg;
 		padding: 5px 0;
 		transition: 0.4s ease-out;
@@ -584,14 +595,22 @@ body{
 	}
 }
 
+.header.hide{
+	transform: translateY(-100%);
+}
 /* главный слайдер ===================================================================================================================*/
 .main-slider {
 	position: relative;
 	background-color: $bg;
-	padding-top: 146px;	
 	align-items: center;
 	border-radius: 0px 0px 48px 48px;
 	overflow-x: hidden;
+	@media (max-width:1220px) {
+		padding-top: 185px;	
+	}
+	@media (max-width:767.98px) {
+		padding-top: 146px;	
+	}
 	@media (min-width: 1220px) {
 		height: 100vh;
 		display: flex;
@@ -633,6 +652,7 @@ body{
 	&__title {
 		font-size: 23px;
 		line-height: 26 / 23 * 100%;
+		text-transform: uppercase;
 		position: relative;
 		span{
 			position: relative;
@@ -654,6 +674,7 @@ body{
 		font-weight: 700;
 		@include adaptiv-value("font-size", 90, 42, 1);
 		line-height: 95 / 90 * 100%;
+		text-transform: uppercase;
 		margin-bottom: 24px;
 		@media (max-width: 767.98px) {
 			margin-bottom: 16px;
