@@ -191,3 +191,13 @@ let _slideToggle = (target, duration = 500) => {
         return _slideUp(target, duration);
     }
 }
+
+//закрытие спойлера при клике в любой области
+document.documentElement.addEventListener("click", function (e){
+    if(!e.target.closest('[data-spoller]')) {
+        const clos = document.querySelector('[data-spoller]._active');
+        clos.classList.remove('_active');
+        _slideUp(clos.nextElementSibling, 500)
+    }
+});
+
