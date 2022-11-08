@@ -40,3 +40,20 @@ ul li{list-style: none;}
 img{vertical-align: top;}
 
 h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
+
+.form * {
+    outline: none;
+}
+
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+  }
+  table {
+	border-collapse: collapse;
+	border-spacing: 0;
+  }

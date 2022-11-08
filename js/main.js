@@ -1,5 +1,127 @@
 
 
+
+// Попап
+const popupLinks = document.querySelectorAll('.popup-link');//добавляем данный класс в HTML дополнительно!!! на ссыллки которые ведут к попап окну
+const body = document.querySelector('body');//для блокировки скрола при открытом попапе
+const lockPadding = document.querySelectorAll(".lock-padding");//добавляем данный класс в HTML дополнительно!!! к фиксированным объектам, например к шапке, чтобы учитывать ширину скролла 
+
+let unlock = true//что бы не было двойных нажатий
+
+const timeout = 800;//цифра должна совпадать с css - transition: 0.8s
+
+if (popupLinks.length > 0) {
+    for (let index = 0; index < popupLinks.length; index++) {
+        const popupLink = popupLinks[index];
+        popupLink.addEventListener("click", function (e) {
+            const popupName = popupLink.getAttribute('href').replace('#', '');
+            const curentPopup = document.getElementById(popupName);
+            popupOpen(curentPopup);
+            e.preventDefault();
+        });   
+    }
+}
+
+const popupCloseIcon = document.querySelectorAll('.close-popup');//добавляем данный класс в HTML для закрытия попапа
+if (popupCloseIcon.length > 0) {    
+    for (let index = 0; index < popupCloseIcon.length; index++) {
+        const el = popupCloseIcon[index];
+        el.addEventListener("click", function (e) {
+            popupClose(el.closest('.popup'));
+            e.preventDefault();
+        });   
+    }
+}
+
+function popupOpen(curentPopup) {
+    if (curentPopup && unlock) {
+        const popupActive = document.querySelector('.popup.open');
+        if (popupActive) {
+            popupClose(popupActive, false);
+        } else {
+            bodyLock();
+        }
+        curentPopup.classList.add('open');
+        curentPopup.addEventListener("click", function (e) {
+            if (!e.target.closest('.popup__content')) {
+                popupClose(e.target.closest('.popup'));
+            }
+        });
+    }
+}
+function popupClose(popupActive, doUnlock = true) {
+    if (unlock) {
+        popupActive.classList.remove('open');
+        if (doUnlock) {
+            bodyUnLock();
+        }
+    }   
+}
+
+function bodyLock() {
+    const lockPaddingValue = window.innerWidth - document.querySelector('.wrapper').offsetWidth + 'px';
+
+    if (lockPadding.length > 0) {
+        for (let index = 0; index < lockPadding.length; index++) {
+            const el = lockPadding[index];
+            el.style.paddingRight = lockPaddingValue;//высчитываем ширину скрола, чтобы при появлении попапа контент не сдвигался
+        }
+    }    
+    body.style.paddingRight = lockPaddingValue;//высчитываем ширину скрола, чтобы при появлении попапа контент не сдвигался
+    body.classList.add('_lock');
+
+    unlock = false;
+    setTimeout(function() {
+        unlock = true;
+    }, timeout);
+}
+
+function bodyUnLock() {//высчитываем ширину скрола, чтобы при появлении попапа он не сдвигался
+    setTimeout(function () {
+        if (lockPadding.length > 0) {
+            for (let index = 0; index < lockPadding.length; index++) {
+                const el = lockPadding[index];
+                el.style.paddingRight = '0px';
+            }
+        }    
+        body.style.paddingRight = '0px';
+        body.classList.remove('_lock');
+    }, timeout);
+
+    unlock = false;
+    setTimeout(function() {
+        unlock = true;
+    }, timeout);
+}
+
+document.addEventListener('keydown', function (e) {
+    if (e.which === 27) {
+        const popupActive = document.querySelector('.popup.open');
+        popupClose(popupActive);
+    }
+}); 
+
+(function () {
+    //проверям поддержку
+    if (!Element.prototype.closest) {
+        Element.prototype.closest = function (css) {
+            var node = this;
+            while (node) {
+                if (node.matches(css)) return node;
+                else node = node.parentElement;
+            }
+            return null;
+        };
+    }
+})();
+(function () {
+    if (!Element.prototype.matches) {
+    Element.prototype.matches = Element.prototype.matchesSelector ||
+        Element.prototype.webkitMatchesSelector ||
+        Element.prototype.mozMatchesSelector ||
+        Element.prototype.msMatchesSelector;
+    }    
+})();
 /* Исчезновение шапки при скролле */
 let lastScroll = 0;
 const defaultOffset = 100;//через сколько px при прокрутке вниз исчезает блок
@@ -249,6 +371,76 @@ function swiperCard() {
 swiperCard();
 window.addEventListener("resize", swiperCard);
 }
+
+/* слайдер discription-------------------------------------------------------------------------------------------------------------------------------- */
+
+if (document.querySelector('.discription-slider')) {
+  const swiper = new Swiper('.discription-slider__swiper', {
+      // бесконечная прокрутка
+      loop: true,
+      //автоматическая прокрутка при загрузке страници
+        autoplay:{ 
+            delay: 2500,
+            stopOnLastSlider: true, 
+            disableOninteraction: false
+        },
+      // Скорость прокрутки  
+      speed: 1000,  
+      // базавая пагинация
+      pagination: {
+        el: '.discription-slider__swiper-pagination', 
+        clickable: true,
+      },
+      // Navigation arrows
+      navigation: {
+        nextEl: '.discription-slider__swiper-button-next',
+        prevEl: '.discription-slider__swiper-button-prev',
+      },
+      // Количество слайдев для показа
+      slidesPerView: 1,
+       // Стартовый слайд
+       initialSlide: 0,
+        // Паралакс
+       parallax: true,
+       // Упарвление клавиатурой
+       keyboard: {
+         enabled: true,
+         onlyInViewport: true,
+         pageUpDown: true,
+       },
+      // Отключение функционала, если слайдов меньше чем нужно
+      watchOverflow: true,
+      // Обновить свайпер при изменении элементов свайпера
+      observer: true,
+      // Обновить свайпер при изменении дочерних элементов свайпера
+      observeSlideChildren: true,
+      // Обновить свайпер при изменении родительских элементов свайпера
+      observeParents: true,
+      //счётчик слайдеров
+      on: {
+        init: function (swiper) {
+          const allSlides = document.querySelector('.fraction-control__all');
+          const allSlidesItems = document.querySelectorAll('.discription-slider__swiper-slide:not(.swiper-slide-duplicate)');
+          allSlides.innerHTML = allSlidesItems.length < 10 ? `0${allSlidesItems.length}` : allSlidesItems.length;
+        },
+        slideChange: function (swiper) {
+          const currentSlide = document.querySelector('.fraction-control__current');
+          currentSlide.innerHTML = swiper.realIndex + 1 < 10 ? `0${swiper.realIndex + 1}` : swiper.realIndex + 1;
+        }
+      },
+      breakpoints: {
+        320: {
+          spaceBetween: 40,
+          // autoHeight: true
+        },
+        1260: {
+          spaceBetween: 40
+        },
+      },
+  });
+}
+
+
 /* спойлеры */
 /* 
 Для родителя спойлеров пишем атрибут data-spollers
@@ -443,6 +635,7 @@ let _slideToggle = (target, duration = 500) => {
     }
 }
 
+//закрытие спойлера при клике в любой области
 document.documentElement.addEventListener("click", function (e){
     if(!e.target.closest('[data-spoller]')) {
         const clos = document.querySelector('[data-spoller]._active');
@@ -617,3 +810,103 @@ DynamicAdapt.prototype.arraySort = function (arr) {
 
 const da = new DynamicAdapt("max");
 da.init();
+// форма для заполнения с отправкой на почту
+"use strict"
+
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('form');
+    form.addEventListener('submit', formSend);
+
+    async function formSend(e) {
+        e.preventDefault();
+
+        let error = formValidate(form);
+
+        let formData = new FormData(form);
+        formData.append('image', formImage.files[0]);
+
+        if ( error === 0) {  
+            form.classList.add('_sending');// класс для загрузки аннимированной картинки, пока отправляется форма      
+            let response = await fetch('sendmail.php', {
+                type: 'POST',
+                body: formData
+            });
+            if (response.ok) {
+                let result = await response.json();
+                alert(result.massage);
+                formPreview.innerHTML = '';
+                form.reset();
+                form.classList.remove('_sending');
+            } else {
+                alert('Ошибка1');
+                form.classList.remove('_sending');
+            }
+        } else {
+            alert('заполните обязательные поля');
+        }
+    }
+
+    function formValidate(form) {
+        let error = 0;
+        let formReq = document.querySelectorAll('._req');// класс для HTML для подсветки красным полей импутов если они не заполнены
+
+        for (let index = 0; index < formReq.length; index++) {
+            const input = formReq[index];
+            formRemoveError(input);
+
+            if (input.classList.contains('_email')) {
+                if (emailTest(input)) {
+                    formAddError(input);
+                    error++;
+                }
+            } else if (input.getAttribute("type") === "checkbox" && input.checked === false) {
+                formAddError(input);
+                error++;
+            } else {
+                if (input.value === '') {
+                    formAddError(input);
+                    error++;
+                }
+            }
+        }
+        return error;
+    }
+    function formAddError(input) {
+        input.parentElement.classList.add('_error');// класс для scc для подсветки красным полей импутов если они не заполнены
+        input.classList.add('_error');
+    }
+    function formRemoveError(input) {
+        input.parentElement.classList.remove('_error');
+        input.classList.remove('_error');
+    }
+    function emailTest(input) {
+        return !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,8})+$/.test(input.value);// проверка на правельность ввода Email
+    }
+    const formImage = document.getElementById('formImage');
+    const formPreview = document.getElementById('formPreview');
+    
+    formImage.addEventListener('change', () => {
+        upLoadFile(formImage.files[0]);
+    });
+
+    function upLoadFile(file) {
+        if(!['image/jpeg', 'image/png', 'image/gif'].includes(file.type)) {
+            alert('Разрешены только изображения.');
+            formImage.value = '';
+            return;
+        }
+        if (file.size > 2 * 1024 * 1024) {
+            alert('Файл должен быть меньше 2 Мб.');
+            return;
+        }
+
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            formPreview.innerHTML = `<img src="${e.target.result}" alt="Фото">`;
+        };
+        reader.onerror = function (e) {
+            alert('Ошибка');
+        };
+        reader.readAsDataURL(file);
+    }
+});

@@ -156,3 +156,72 @@ function swiperCard() {
 swiperCard();
 window.addEventListener("resize", swiperCard);
 }
+
+/* слайдер discription-------------------------------------------------------------------------------------------------------------------------------- */
+
+if (document.querySelector('.discription-slider')) {
+  const swiper = new Swiper('.discription-slider__swiper', {
+      // бесконечная прокрутка
+      loop: true,
+      //автоматическая прокрутка при загрузке страници
+        autoplay:{ 
+            delay: 2500,
+            stopOnLastSlider: true, 
+            disableOninteraction: false
+        },
+      // Скорость прокрутки  
+      speed: 1000,  
+      // базавая пагинация
+      pagination: {
+        el: '.discription-slider__swiper-pagination', 
+        clickable: true,
+      },
+      // Navigation arrows
+      navigation: {
+        nextEl: '.discription-slider__swiper-button-next',
+        prevEl: '.discription-slider__swiper-button-prev',
+      },
+      // Количество слайдев для показа
+      slidesPerView: 1,
+       // Стартовый слайд
+       initialSlide: 0,
+        // Паралакс
+       parallax: true,
+       // Упарвление клавиатурой
+       keyboard: {
+         enabled: true,
+         onlyInViewport: true,
+         pageUpDown: true,
+       },
+      // Отключение функционала, если слайдов меньше чем нужно
+      watchOverflow: true,
+      // Обновить свайпер при изменении элементов свайпера
+      observer: true,
+      // Обновить свайпер при изменении дочерних элементов свайпера
+      observeSlideChildren: true,
+      // Обновить свайпер при изменении родительских элементов свайпера
+      observeParents: true,
+      //счётчик слайдеров
+      on: {
+        init: function (swiper) {
+          const allSlides = document.querySelector('.fraction-control__all');
+          const allSlidesItems = document.querySelectorAll('.discription-slider__swiper-slide:not(.swiper-slide-duplicate)');
+          allSlides.innerHTML = allSlidesItems.length < 10 ? `0${allSlidesItems.length}` : allSlidesItems.length;
+        },
+        slideChange: function (swiper) {
+          const currentSlide = document.querySelector('.fraction-control__current');
+          currentSlide.innerHTML = swiper.realIndex + 1 < 10 ? `0${swiper.realIndex + 1}` : swiper.realIndex + 1;
+        }
+      },
+      breakpoints: {
+        320: {
+          spaceBetween: 40,
+          // autoHeight: true
+        },
+        1260: {
+          spaceBetween: 40
+        },
+      },
+  });
+}
+
