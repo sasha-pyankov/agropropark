@@ -823,7 +823,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let error = formValidate(form);
 
         let formData = new FormData(form);
-        formData.append('image', formImage.files[0]);
+        // formData.append('image', formImage.files[0]);
 
         if ( error === 0) {  
             form.classList.add('_sending');// класс для загрузки аннимированной картинки, пока отправляется форма      
@@ -842,7 +842,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 form.classList.remove('_sending');
             }
         } else {
-            alert('заполните обязательные поля');
+            // alert('заполните обязательные поля');
         }
     }
 
@@ -856,6 +856,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (input.classList.contains('_email')) {
                 if (emailTest(input)) {
+                    formAddError(input);
+                    error++;
+                }
+            } else if (input.classList.contains('_phone')) {
+                if (phoneTest(input)) {
                     formAddError(input);
                     error++;
                 }
@@ -881,6 +886,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     function emailTest(input) {
         return !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,8})+$/.test(input.value);// проверка на правельность ввода Email
+    }
+    function phoneTest(input) {
+        return !/^[\d\+][\d\(\)\ -]{4,14}\d$/.test(input.value);// проверка на правельность ввода phone
     }
     const formImage = document.getElementById('formImage');
     const formPreview = document.getElementById('formPreview');
