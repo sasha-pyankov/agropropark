@@ -229,6 +229,7 @@ body{
 	height: 56px;
 	transition: 0.4s ease-out;
 }
+
 .icon-vector {
 	display: inline-block;
 	fill: $green;
@@ -236,6 +237,14 @@ body{
 	width: 14px;
 	height: 14px;
 	transition: 0.4s ease-out;
+}
+
+.icon-cross {
+	display: inline-block;
+	fill: $black-text;
+	cursor: pointer;
+	width: 12px;
+	height: 12px;
 }
 
 /* повторяющиеся классы */
@@ -512,28 +521,6 @@ body{
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		&::before,
-		&::after {
-			position: absolute;
-			height: 3px;
-			width: 12px;
-			border-radius: 4px;
-			background-color: $black-text;
-		}
-		&::before,
-		&::after {
-			content: "";
-		}
-		&::before {
-			top: 49%;
-			left: 40%;
-			transform: rotate(-45deg) translate(0px, -49%);
-		}
-		&::after {
-			bottom: 48%;
-			left: 40%;
-			transform: rotate(45deg) translate(0%, 48%);
-		}
 		@media (max-width:479.98px) {
 			right: 10px;
 			top: 10px;
@@ -722,7 +709,7 @@ input._error + .form__label {
 		&::after {
 			content: "";
 			position: absolute;
-			background-image: url(/img/icon/chek-mask.svg);
+			background-image: url(../img/icon/chek-mask.svg);
 			background-repeat: no-repeat;
 			background-size: cover;
 			top: 6px;
